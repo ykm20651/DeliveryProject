@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    import: application-secret.yml
+  datasource:
+    url: jdbc:mysql://localhost:3306/deliverydb # MySQL deliverydb라는 이름의 DB 연결 URL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
