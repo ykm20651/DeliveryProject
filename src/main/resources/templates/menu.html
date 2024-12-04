@@ -2,15 +2,90 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        li span {
+            font-weight: bold;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ff9a00;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        a:hover {
+            background: #ff6f00;
+        }
+    </style>
 </head>
 <body>
-<h1>Menu List</h1>
-<ul>
-    <li>Example Menu Item 1 - $10.00</li>
-    <li>Example Menu Item 2 - $15.00</li>
-    <li>Example Menu Item 3 - $20.00</li>
-    <!-- 실제 DB에서 메뉴 데이터를 불러오도록 수정 가능 -->
+<h1>🍔 Menu List</h1>
+<ul id="menuList">
+    <!-- 음식 데이터가 여기에 추가됨 -->
 </ul>
+<a href="../static/menus.html">Back to Home</a>
+
+<script>
+    // 서버에서 음식 데이터를 가져와 렌더링
+    async function fetchMenu() {
+        const response = await fetch('/home/foods');
+        if (response.ok) {
+            const foods = await response.json();
+            const menuList = document.getElementById('menuList');
+
+            // 음식 데이터를 HTML로 추가
+            foods.forEach(food => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${food.name}</span> - $<span>${food.price}</span>`;
+                menuList.appendChild(li);
+            });
+        } else {
+            console.error('Failed to fetch foods');
+        }
+    }
+
+    fetchMenu(); // 페이지 로드 시 데이터 가져오기
+</script>
 </body>
 </html>

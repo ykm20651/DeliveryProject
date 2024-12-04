@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인 페이지 - Delivery Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            padding: 1.5rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        nav a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background: #ff9a00;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        nav a:hover {
+            background: #ff6f00;
+            transform: scale(1.1);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #ff4d4d;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: #e60000;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>📦 음식 주문 관리 시스템</h1>
+</header>
+<nav>
+    <a href="menus.html">🍴 메뉴 보기</a>
+    <a href="../templates/orderDetail.html">📝 주문 상세 정보</a>
+    <a href="../templates/orders.html">🛒 주문 관리</a>
+</nav>
+<button id="logout">로그아웃</button>
+
+<footer>
+    © 2024 Delivery Service. All rights reserved.
+</footer>
+
+<script>
+    document.getElementById('logout').addEventListener('click', async function() {
+        const response = await fetch('/home/users/logout', {
+            method: 'POST',
+        });
+
+        if (response.ok) {
+            alert("로그아웃 성공!");
+            window.location.href = "login.html";
+        } else {
+            alert("로그아웃 실패! 다시 시도해주세요.");
+        }
+    });
+</script>
+</body>
+</html>
