@@ -19,14 +19,26 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false, unique = true)
+    private String password;
+
+
+
     protected User() {}
 
-    public User(String name, String phoneNumber) {
+    public User(String name, String email, String password, String phoneNumber) {
         this.name = name;
+        this.email = email;
+        this.password = password;
         this.phoneNumber = phoneNumber;
     }
 
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getPhoneNumber() { return phoneNumber; }
+    public String getPassword() { return password; }
+    public String getEmaill() { return email; }
 }
