@@ -1,6 +1,8 @@
 package com.example.deliveryproject.Entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
+
 import java.util.List;
 
 @Entity
@@ -29,6 +31,7 @@ public class User {
 
     protected User() {}
 
+    @Builder
     public User(String name, String email, String password, String phoneNumber) {
         this.name = name;
         this.email = email;
@@ -40,5 +43,7 @@ public class User {
     public String getName() { return name; }
     public String getPhoneNumber() { return phoneNumber; }
     public String getPassword() { return password; }
-    public String getEmaill() { return email; }
+    public String getEmail() { return email; }
+
+
 }

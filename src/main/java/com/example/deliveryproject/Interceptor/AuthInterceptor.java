@@ -13,12 +13,15 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession(false);
 
-        // 세션이 없거나 세션에 사용자 정보가 없으면 인증 실패
         if (session == null || session.getAttribute("user") == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"error\": \"Unauthorized: Please log in.\"}");
             return false;
         }
 
-        return true; // 인증 성공
+        return true;
     }
 }
+
