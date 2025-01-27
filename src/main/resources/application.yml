@@ -12,3 +12,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  mvc:
+    view:
+      prefix: /templates/  # 뷰 파일 경로
+      suffix: .html        # 뷰 파일 확장자
+

@@ -18,9 +18,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
     }
 
     // 회원 추가
@@ -43,33 +43,44 @@ public class UserService {
     // 회원가입
     public void registerUser(UserRequestDTO userRequestDTO) {
         // 이메일 중복 확인
-        if (userRepository.existsByEmail(userRequestDTO.email())) { //JPA 기능에서 자동으로 만들어짐 인터페이스 만들어서
-            throw new IllegalArgumentException("Email already exists!");
+        if (userRepository.existsByEmail(userRequestDTO.email())) {
+            System.out.println("Email already exists");
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
+        //디버깅 중
+        System.out.println("Email does not exist, proceeding...");
+
         // 비밀번호 암호화
+        System.out.println("Encrypting password...");
         String encryptedPassword = passwordEncoder.encode(userRequestDTO.password());
+        System.out.println("Encrypted password: " + encryptedPassword);
+
         // User 엔티티 생성 및 저장
         User user = new User(userRequestDTO.name(), userRequestDTO.email(), encryptedPassword, userRequestDTO.phoneNumber());
+        System.out.println("User created: " + user);
+
         userRepository.save(user);
+        System.out.println("User saved to repository.");
     }
+
 
     public void loginUser(LoginRequestDTO loginRequestDTO, HttpSession session) {
         // 이메일로 사용자 조회
         User user = userRepository.findByEmail(loginRequestDTO.email())
                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 이메일입니다."));
 
-        // 비밀번호 검증 전에 디버깅 코드 추가
-        System.out.println("Encoded password: " + user.getPassword()); // DB에 저장된 암호화된 비밀번호 출력
-        System.out.println("Matches: " + passwordEncoder.matches(loginRequestDTO.password(), user.getPassword())); // 입력 비밀번호와 일치 여부 확인
-
         // 비밀번호 검증
         if (!passwordEncoder.matches(loginRequestDTO.password(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+            throw new RuntimeException("비밀번호가 올바르지 않습니다."); // 또는 커스텀 예외를 던짐
         }
+
 
         // 세션에 사용자 정보 저장
         session.setAttribute("user", user);
     }
+
+
+
 
 
 }

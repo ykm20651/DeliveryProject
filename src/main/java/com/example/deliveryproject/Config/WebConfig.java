@@ -16,9 +16,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 인증이 필요한 URL에 대해 인터셉터를 적용
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api/**") // 필요한 경로에 적용
-                .excludePathPatterns("/api/users/signup", "/api/users/login"); // 예외 처리
+                .addPathPatterns("/home/users/**") // `/home/users/...` 경로에 인터셉터 적용
+                .excludePathPatterns(
+                        "/home/users/signup", // 회원가입 예외
+                        "/home/users/login",  // 로그인 예외
+                        "/home/users/logout"  // 로그아웃 예외 (필요하면 추가)
+                );
     }
 }
+

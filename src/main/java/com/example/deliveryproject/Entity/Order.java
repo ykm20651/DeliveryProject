@@ -1,6 +1,7 @@
 package com.example.deliveryproject.Entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
 @Table(name = "orders")
@@ -26,6 +27,7 @@ public class Order {
 
     protected Order() {}
 
+    @Builder
     public Order(User user, Food food, Integer quantity, String status) {
         this.user = user;
         this.food = food;

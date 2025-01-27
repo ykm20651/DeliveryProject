@@ -1,6 +1,8 @@
 package com.example.deliveryproject.Entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
+
 import java.util.List;
 
 @Entity
@@ -18,6 +20,7 @@ public class Food {
 
     protected Food() {}
 
+    @Builder
     public Food(String name, Double price) {
         this.name = name;
         this.price = price;
