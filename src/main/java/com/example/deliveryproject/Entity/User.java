@@ -18,7 +18,7 @@ public class User {
     @Column(nullable = false, unique = true) // 전화번호는 고유해야 함
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Order> orders;
 
     @Column(nullable = false, unique = true)
@@ -45,5 +45,6 @@ public class User {
     public String getPassword() { return password; }
     public String getEmail() { return email; }
 
+    public List<Order> getOrders() { return orders; }
 
 }
