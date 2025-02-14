@@ -17,11 +17,11 @@ public class Order {
     private String menuName;  // menu_name과 매핑
     private Double menuPrice; // menu_price와 매핑
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id")
     private Food food;
 
