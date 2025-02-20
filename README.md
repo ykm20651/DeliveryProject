@@ -1,145 +1,148 @@
-# **음식 주문 관리 시스템 - 스프링 예외 처리** 적용하기
+# 음식 주문 관리 시스템 개발 기록
 
-<aside>
-
-**음식 주문 관리 시스템에서 발생할 수 있는 다양한 예외 상황에 대비하여, 이번 과제에서는 스프링의 예외 처리를 구현하는 작업을 진행해주세요.**
-
-</aside>
-
-![예외처리는 꼼꼼히 😧](attachment:998f65b4-99b2-4e85-8ac8-4dddcdf973e8:image.png)
-
-예외처리는 꼼꼼히 😧
-
-### **0. Spring 예외 처리 이론 학습하기**
+본 프로젝트는 음식 주문 관리 시스템을 개발하는 과정에서 주차별로 진행한 내용을 정리한 기록입니다.
 
 ---
 
-- `스프링에서 예외 처리는 왜 필요할까?`
-- `스프링 MVC의 기본 예외 처리 메커니즘`
-- `주요 애노테이션`
-    - `@ControllerAdvice`
-    - `@ExceptionHandler`
-    - `@ResponseStatus` 등
-- `예외를 처리하여 클라이언트에게 응답으로 반환하는 방법`
+## 1주차 - 음식 주문 관리 시스템 만들기
 
-### **1. Spring 예외 처리 적용 실습**
+### 📌 개요
+해커톤에 참여하여 음식 주문 관리 시스템을 개발하였습니다.  
+사용자는 본인이 원하는 음식을 주문하고 관리할 수 있으며, 주문 변경 및 취소 기능을 포함합니다.
+
+### 📌 필수 기능
+1. **메뉴 조회**: 사용자는 주문 가능한 메뉴 정보를 확인할 수 있습니다.  
+   - 메뉴는 HTML 정적 페이지 또는 이미지로 제공됩니다.
+2. **주문 조회**: 사용자가 지금까지 추가한 주문들을 조회할 수 있습니다.
+3. **주문 추가**: 사용자가 특정 음식을 선택해 주문할 수 있습니다.
+4. **주문 변경**: 특정 주문의 수량 또는 옵션을 변경할 수 있습니다.
+5. **주문 취소**: 특정 주문을 취소할 수 있습니다.
+
+### 📌 개발 원칙
+- DTO는 **record 타입**을 사용하여 최신 Java 문법을 반영합니다.
+- **RESTful API**를 준수하여 개발합니다.
+- **컨트롤러, 서비스, 레포지토리, 엔티티**를 분리하여 설계합니다.
+- **JPA를 활용하여 데이터베이스를 연동**합니다.
+- `application.yml`과 `application-secret.yml`을 분리하여 환경별 설정을 관리합니다.
+- 정적 페이지는 `src/main/resources/static`에 위치하며, 일반 `Controller`를 사용하여 제공됩니다.
 
 ---
 
-1. **프로젝트 내 예외 상황 점검**
-    - 현재 예외를 발생하고 있는 지점을 파악하여 정리하기
-    
-    ---
-    
+## 2주차 - DB 테이블 분리 및 연관관계 매핑
+
+### 📌 목표
+1. **테이블 분리**  
+   기존 주문 테이블에 모든 정보를 포함하는 방식을 개선하여, 역할별 테이블을 분리합니다.
+   - 음식 테이블
+   - 주문 테이블
+   - 사용자 테이블
+
+2. **연관관계 매핑**  
+   JPA를 활용하여 각 테이블 간 연관관계를 매핑하고, **ERD 다이어그램을 작성**합니다.
+
+3. **API 확장**  
+   - **사용자 생성 API** 추가 (`RestController` 생성)
+   - **트랜잭션 처리**를 활용하여 데이터의 일관성을 유지합니다.
+
+### 📌 개발 원칙
+- GitHub 레포지토리 내에서 **이슈 트래킹**을 수행합니다.
+- API 응답을 JSON 포맷으로 반환하도록 수정합니다.
+- **DTO를 request, response로 구분**하여 사용합니다.
+
+---
+
+## 3주차 - 회원 기능 추가 및 로그인 유지
+
+### 📌 목표
+1. **회원가입 기능 추가**
+   - 사용자가 아이디(이메일), 비밀번호, 닉네임을 입력하여 회원가입할 수 있도록 구현합니다.
+   - 비밀번호는 **BCrypt 등 암호화 방식**을 사용하여 저장합니다.
+   - 아이디 중복 검사를 수행합니다.
+   - (선택) 프로필 이미지 업로드 기능을 추가합니다.
+
+2. **로그인 기능 구현**
+   - **세션을 등록하여 로그인 유지** 기능을 제공합니다.
+   - (선택) **JWT를 활용한 로그인 방식**도 고려할 수 있습니다.
+
+3. **인증 및 인가 처리**
+   - 로그인된 회원만 주문할 수 있도록 인증 처리를 구현합니다.
+   - 자신의 주문 내역만 조회할 수 있도록 **권한 관리**를 수행합니다.
+   - 세션 검증 로직은 **인터셉터에서 처리**합니다.
+
+4. **로그아웃 기능 추가**
+   - 세션을 만료시키는 방식으로 로그아웃 기능을 구현합니다.
+
+### 📌 개발 원칙
+- **클린 코드**를 준수하여 작성합니다.
+- 한 메서드가 **4줄 이상 넘어가거나 들여쓰기가 3번 이상**이면 코드 분리를 고려합니다.
+- `private`, `public` 접근 제어자를 적절히 활용합니다.
+- API 실행 결과를 **Postman 등의 툴을 이용하여 캡처 및 공유**합니다.
+
+---
+
+## 연장 1주차 - 테스트 코드 작성
+
+### 📌 목표
+1. **단위 테스트 및 통합 테스트 작성**
+   - `단위 테스트`: 개별 기능이 정상적으로 동작하는지 확인합니다.
+   - `통합 테스트`: API 전체 흐름이 올바르게 동작하는지 검증합니다.
+
+2. **테스트 케이스**
+   - `Repository 테스트`: H2 DB를 사용하여 JPA가 정상 동작하는지 확인합니다.
+   - `Service 테스트`: Mock 객체를 활용하여 서비스 로직을 검증합니다.
+   - `Controller 테스트`: `MockMvc`를 활용하여 API 응답을 검증합니다.
+   - `통합 테스트`: Spring 컨텍스트를 로드하여 전체 API 흐름을 검증합니다.
+
+### 📌 개발 원칙
+- 테스트 코드 작성 시 **AAA 패턴 (Given, When, Then)**을 준수합니다.
+- 테스트 메서드 네이밍 컨벤션을 정하고 일관되게 작성합니다.
+
+---
+
+## 연장 2주차 - 쿼리 최적화
+
+### 📌 목표
+1. **QueryDSL 적용 및 학습**
+   - JPQL의 한계를 파악하고 QueryDSL을 적용합니다.
+   - QueryDSL 주요 메서드를 익히고 활용합니다.
+
+2. **쿼리 최적화**
+   - 불필요한 `N+1 문제`를 해결합니다.
+   - 여러 번의 SELECT 및 UPDATE 쿼리가 발생하는 부분을 개선합니다.
+
+### 📌 개발 원칙
+- 데이터 조회 시 **Lazy Loading과 Fetch Join을 적절히 활용**합니다.
+- 로그를 통해 실행되는 SQL을 확인하고 개선합니다.
+- QueryDSL을 적용한 `repositoryImpl`에 대한 테스트 코드를 작성합니다.
+
+---
+
+## 연장 3주차 - 스프링 예외 처리 적용
+
+### 📌 목표
+1. **Spring 예외 처리 학습**
+   - `@ControllerAdvice`, `@ExceptionHandler`, `@ResponseStatus` 등의 개념을 학습합니다.
+   - 클라이언트에게 응답을 반환하는 방식을 정의합니다.
+
 2. **Global Exception Handler 구현**
-    - `@RestControllerAdvice`와 `@ExceptionHandler`를 활용하여 전역 예외 처리 클래스를 작성하기
-    - 에러 메시지, HTTP 상태 코드, 타임스탬프 등 **공통된 응답 형식**을 정의하여 클라이언트에 일관된 정보를 제공해주세요.
-    - **참고 1. [프로젝트](https://github.com/Re-4aliens/backend)에서 사용중인 Exception Handler**
-        
-        ```java
-        @RestControllerAdvice
-        @Order(value = Integer.MIN_VALUE)
-        public class ApiExceptionHandler {
-        
-            @ExceptionHandler(value = RestApiException.class)
-            public ResponseEntity<Object> apiException(RestApiException apiException) {
-                ErrorCode errorCode = apiException.getErrorCode();
-                return ResponseEntity
-                        .status(errorCode.getHttpStatus())
-                        .body(errorCode.getDevelopCode());
-            }
-        }
-        ```
-        
+   - `@RestControllerAdvice`와 `@ExceptionHandler`를 활용하여 전역 예외 처리를 구현합니다.
+   - 에러 메시지, HTTP 상태 코드, 타임스탬프 등을 포함한 **일관된 에러 응답 형식**을 정의합니다.
+
 3. **커스텀 예외 클래스 작성**
-    - **참고 2. [프로젝트](https://github.com/Re-4aliens/backend)에서 사용중인 커스텀 예외**
-        
-        ```java
-        public class RestApiException extends RuntimeException {
-        
-            private final ErrorCode errorCode;
-        
-            public RestApiException(final ErrorCode errorCode) {
-                super(errorCode.getDevelopCode());
-                this.errorCode = errorCode;
-            }
-        
-            public ErrorCode getErrorCode() {
-                return errorCode;
-            }
-        }
-        ```
-        
-4. **에러코드 Enum 활용해보기**
-    - 도메인 별 에러코드를 만들어 문서처럼 관리해볼 수 있어요.
-    - 개발시 필수는 아니지만, 만들어두면 협업때 편하게 사용할 수 있습니다.
-    - **참고 3. [프로젝트](https://github.com/Re-4aliens/backend)에서 사용중인 ErrorCode Enum**
-        
-        ```java
-        public interface ErrorCode {
-            String getDevelopCode();
-            HttpStatus getHttpStatus();
-            String getMessage();
-        }
-        ```
-        
-        ```java
-        public enum MatchingError implements ErrorCode {
-            NOT_FOUND_MATCHING_ROUND(HttpStatus.NOT_FOUND, "MA1", "매칭 회차를 찾을 수 없음"),
-            NOT_VALID_MATCHING_RECEPTION_TIME(HttpStatus.BAD_REQUEST, "MA2", "매칭 접수 시간이 아님"),
-            NOT_FOUND_MATCHING_APPLICATION_INFO(HttpStatus.NOT_FOUND, "MA3", "매칭 신청 정보 찾을 수 없음"),
-            NOT_FOUND_PREFER_LANGUAGE(HttpStatus.NOT_FOUND, "MA4", "선호 언어를 찾을 수 없음"),
-            INVALID_LANGUAGE_INPUT(HttpStatus.BAD_REQUEST, "MA5", "두 선호 언어가 같을 수 없음"),
-            DUPLICATE_MATCHING_APPLICATION(HttpStatus.BAD_REQUEST, "MA6", "중복된 매칭 신청"),
-            ;
-        
-            private final HttpStatus httpStatusCode;
-            private final String developCode;
-            private final String message;
-        
-            MatchingError(final HttpStatus httpStatusCode, final String developCode, final String message) {
-                this.httpStatusCode = httpStatusCode;
-                this.developCode = developCode;
-                this.message = message;
-            }
-        
-            @Override
-            public HttpStatus getHttpStatus() {
-                return httpStatusCode;
-            }
-        
-            @Override
-            public String getDevelopCode() {
-                return developCode;
-            }
-        
-            @Override
-            public String getMessage() {
-                return message;
-            }
-        }
-        ```
-        
+   - `RestApiException` 클래스를 생성하여 예외 정보를 캡슐화합니다.
+
+4. **에러 코드 Enum 활용**
+   - 도메인별로 에러 코드를 정의하여 관리합니다.
+
 5. **테스트 코드 작성**
-    - 각 예외 상황에 대한 **테스트**를 작성하여, 글로벌 예외 핸들러가 올바르게 작동하는지 검증해주세요
-    
+   - 발생 가능한 예외 상황을 검증하는 테스트 코드를 작성합니다.
 
-### 2. 심화(선택)
-
----
-
-- 컨트롤러가 아닌 인터셉터에서 예외(세션 관련)가 발생한다면 어떻게 사용자에게 응답으로 반환할 수 있을까?
-    - 생각해보거나 실제로 구현해보기
-
-<aside>
-
-### **📌 개발 시 지켜야할 것**
-
-</aside>
-
-- 파고들고, 즐기면서 개발하기🙂
-- 기억이 잘 안나는 부분은 이전 과제 복습하기
+### 📌 개발 원칙
+- 인터셉터에서 발생하는 예외를 어떻게 처리할지 고민합니다.
+- 기존 기능과의 연계성을 고려하여 예외 처리를 진행합니다.
 
 ---
 
-진행하시면서 어려운 점이 있으면 언제든지 질문해 주세요. 😊 **각자의 깃허브 레포지토리에 진행한 내용을 PR로 남겨주시고, 완료되면 저를 리뷰어로 지정**해주세요.
+## Ing. . . 
+
+각 주차별 최대한 개발 원칙 지켜보기, 공부중. . . 
